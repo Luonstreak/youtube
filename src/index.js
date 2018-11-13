@@ -4,6 +4,7 @@ import YTSearch from 'youtube-api-search';
 
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail';
 
 const GOOGLE_API_KEY = "AIzaSyCEpURqLoJrjo3vCEemDFDXv1e5d3QH2Ks";
 
@@ -13,19 +14,23 @@ class App extends React.Component {
 		
 		this.state = {
 			videos: [],
+			selectedVideo: null
 		}
 
-		YTSearch({ key: GOOGLE_API_KEY, term: "circles" }, videos => {
-			console.log(videos)
+		this.videoSearch('gigahertz');
+	}
+
+	videoSearch = term => {
+		YTSearch({ key: GOOGLE_API_KEY, term: term }, videos => {
 			this.setState({ videos });
 		})
-
-	}
+	};
 
 	render(){
 		return <div>
-			<SearchBar />
-			<VideoList videos={this.state.videos}/>
+			<SearchBar videoSearchChange={term => this.videoSearch(term)} />
+			<VideoDetail video={this.state.selectedVideo || this.state.videos[0]}/>
+			<VideoList videos={this.state.videos} onVideoSelect={selectedVideo => this.setState({selectedVideo})}/>
 		</div>
 	}
 }

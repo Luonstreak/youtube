@@ -17,15 +17,13 @@ class SearchBar extends React.Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		this.setState({ input: "" });
-		console.log('submited search!');
+		this.props.videoSearchChange(this.state.input);
 	}
 
 	render(){
 		return <div>
 			<input type="text" onChange={this.handleInput} value={this.state.input} />
-			<button onSubmit={this.handleSubmit}>Search</button>
-			<h1>{this.state.input}</h1>
+			<button onClick={this.handleSubmit}>Search</button>
 		</div>
 	}
 }
