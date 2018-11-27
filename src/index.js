@@ -27,12 +27,27 @@ class App extends React.Component {
 	};
 
 	render(){
-		return <div>
-			<SearchBar videoSearchChange={term => this.videoSearch(term)} />
-			<VideoDetail video={this.state.selectedVideo || this.state.videos[0]}/>
-			<VideoList videos={this.state.videos} onVideoSelect={selectedVideo => this.setState({selectedVideo})}/>
+		return <div style={styles.container}>
+			<SearchBar style={styles.searchBar} videoSearchChange={term => this.videoSearch(term)} />
+			<VideoDetail style={styles.videoDetail} video={this.state.selectedVideo}/>
+			<VideoList style={styles.videoList} videos={this.state.videos} onVideoSelect={selectedVideo => this.setState({selectedVideo})}/>
 		</div>
 	}
 }
 
+const styles = {
+  container: {
+    alignItems: "center",
+  },
+  searchBar: {
+  },
+  videoDetail: {
+
+  },
+  videoList: {
+
+  }
+}
+
 ReactDOM.render(<App />, document.querySelector(".container"));
+

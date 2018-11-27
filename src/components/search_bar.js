@@ -1,31 +1,60 @@
-import React from 'react';
+import React, { Component } from "react";
 
-class SearchBar extends React.Component {
-	constructor(props){
-		super(props);
-		this.state = {
-			input: '',
-			submit: false
-		}
-		this.handleInput = this.handleInput.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
+import CreatableSelect from "react-select/lib/Creatable";
 
-	handleInput(e){
-		this.setState({ input: e.target.value });
-	}
+const components = {
+  DropdownIndicator: null
+};
 
-	handleSubmit(e) {
-		e.preventDefault();
-		this.props.videoSearchChange(this.state.input);
-	}
+const createOption = (label: string) => ({
+  label,
+  value: label
+});
 
-	render(){
-		return <div>
-			<input type="text" onChange={this.handleInput} value={this.state.input} />
-			<button onClick={this.handleSubmit}>Search</button>
-		</div>
-	}
+export default class CreatableInputOnly extends Component<*, State> {
+  state = {
+    inputValue: "",
+    value: []
+  };
+  handleChange = (value: any, actionMeta: any) => {
+    console.group("Value Changed");
+    console.log(value);
+    console.log(`action: ${actionMeta.action}`);
+    console.groupEnd();
+    this.setState({ value });
+  };
+  handleInputChange = (inputValue: string) => {
+    this.setState({ inputValue });
+  };
+  handleKeyDown = (event: SyntheticKeyboardEvent<HTMLElement>) => {
+    const { inputValue, value } = this.state;
+    if (!inputValue) return;
+    switch (event.key) {
+      case "Enter":
+        this.props.videoSearchChange(this.state.inputValue);
+      case "Tab":
+        this.setState({
+          inputValue: "",
+          value: [...value, createOption(inputValue)]
+        });
+        event.preventDefault();
+    }
+  };
+  render() {
+    const { inputValue, value } = this.state;
+    return (
+      <CreatableSelect
+        components={components}
+        inputValue={inputValue}
+        isClearable
+        isMulti
+        menuIsOpen={false}
+        onChange={this.handleChange}
+        onInputChange={this.handleInputChange}
+        onKeyDown={this.handleKeyDown}
+        placeholder="Type something and press enter..."
+        value={value}
+      />
+    );
+  }
 }
-
-export default SearchBar;

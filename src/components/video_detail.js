@@ -3,10 +3,12 @@ import React from 'react';
 const VideoDetail = ({video}) => {
 
 	if(!video){
-		return <div>loading...</div>
+		return <div>
+        <h1>Search for a video</h1>
+      </div>;
 	}
 	const videoId = video.id.videoId;
-	const url = `https://www.youtube.com/embed/${videoId}`;
+  const url = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
 	return <div>
 		<div>
